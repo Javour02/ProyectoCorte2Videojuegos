@@ -1,0 +1,8 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/ganador.uss?fileID=7433441132597879392&amp;guid=384c53168fc97fd48b9f87fc9e56d5d0&amp;type=3#ganador" />
+    <ui:VisualElement style="width: 100%; height: 100%; align-items: center; justify-content: center; background-color: rgb(0, 0, 0);">
+        <ui:Label text="Felicidades por completar" display-tooltip-when-elided="true" style="font-size: 70px; margin-bottom: 2%; -unity-font-style: bold; color: rgb(255, 255, 255);" />
+        <ui:VisualElement style="background-image: url(&apos;project://database/Assets/assets_platformer/megamanTitle.png?fileID=2800000&amp;guid=c3cde7c80da1a8d45b9735cc44d191e6&amp;type=3#megamanTitle&apos;); width: 50%; height: 40%;" />
+        <ui:Button text="Volver al Menú" display-tooltip-when-elided="true" name="menu" class="bton" />
+    </ui:VisualElement>
+</ui:UXML>

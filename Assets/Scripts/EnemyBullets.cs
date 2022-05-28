@@ -8,11 +8,13 @@ public class EnemyBullets : MonoBehaviour
     float myDirection;
     [SerializeField] float velocity;
     Rigidbody2D mybody;
+    BoxCollider2D mycollider;
     // Start is called before the first frame update
     void Start()
     {
         myDirection = GetComponentInParent<Transform>().localEulerAngles.y;
         mybody = GetComponent<Rigidbody2D>();
+        mycollider = GetComponent<BoxCollider2D>();
     }
 
     // Update is called once per frame
@@ -34,6 +36,7 @@ public class EnemyBullets : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        mycollider.enabled = false;
         Destroy(gameObject);
     }
 }

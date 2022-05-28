@@ -11,11 +11,14 @@ public class Player : MonoBehaviour
     [SerializeField] float jumpForce;
     [SerializeField] float fireRate;
     [SerializeField] AudioClip myAudio;
+    [SerializeField] AudioClip myAudio2;
     [SerializeField] GameObject bul;
+    [SerializeField] float bulletSpeed;
     Rigidbody2D mybody;
     Animator myAnim;
     float starttime;
-    bool isGrounded = true;
+    bool wall;
+    public static bool isGrounded = true;
 
     // Start is called before the first frame update
     void Start()
@@ -29,25 +32,27 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        RaycastHit2D ray = Physics2D.Raycast(transform.position, Vector2.down, 1.3f, LayerMask.GetMask("Piso"));
-        Debug.DrawRay(transform.position, Vector2.down * 1.3f, Color.red);
+        RaycastHit2D ray = Physics2D.Raycast(new Vector2(transform.position.x - (1.776025f / 2), transform.position.y), Vector2.down, 1.3f, LayerMask.GetMask("Piso"));
+        RaycastHit2D ray2 = Physics2D.Raycast(new Vector2(transform.position.x + (1.776025f / 2),transform.position.y), Vector2.down, 1.3f, LayerMask.GetMask("Piso"));
+        Debug.DrawRay(new Vector2(transform.position.x - (1.776025f / 2), transform.position.y), Vector2.down * 1.3f, Color.red);
+        Debug.DrawRay(new Vector2(transform.position.x + (1.776025f / 2), transform.position.y), Vector2.down * 1.3f, Color.red);
         //Debug.Log("Colisionando con "+ray.collider.gameObject.name);
-        isGrounded = (ray.collider != null);
+        isGrounded = (ray.collider != null || ray2.collider != null);
         Jump();
         Fire();
     }
 
     void Fire()
     {
-        if (Input.GetKeyDown(KeyCode.Z))
+        if (Input.GetKeyDown(KeyCode.Z) && (starttime + fireRate) < Time.time)
         {
+            starttime = Time.time;
+            GameObject myBullet = Instantiate(bul, new Vector2(transform.position.x, transform.position.y + 0.1f), transform.rotation);
+            myBullet.GetComponent<bullet>().Shoot(transform.localScale.x, bulletSpeed);
             myAnim.SetLayerWeight(1, 1);
-            if ((starttime+fireRate)<Time.time)
-            {
-                starttime = Time.time;
-                Instantiate(bul, transform.position, transform.rotation);
-                StartCoroutine(MiCorutina());
-            }
+        }else if ((starttime + fireRate + 1f) < Time.time)
+        {
+            myAnim.SetLayerWeight(1, 0);
         }
     }
 
@@ -79,6 +84,7 @@ public class Player : MonoBehaviour
             yield return 0;
         }
         Time.timeScale = 1;
+        setEnemies.enemigos = 0;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
@@ -89,6 +95,7 @@ public class Player : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 myAnim.SetBool("isJumping", true);
+                AudioSource.PlayClipAtPoint(myAudio2, new Vector2(transform.position.x, transform.position.y));
                 mybody.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
             }
         }
@@ -102,25 +109,42 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        float dirH = Input.GetAxis("Horizontal");
-        mybody.velocity = new Vector2(dirH * speed, mybody.velocity.y);
-
-        if(dirH != 0)
+        if (wall)
         {
-            myAnim.SetBool("isRunning", true);
-            if (dirH < 0)
+            float dirH = Input.GetAxis("Horizontal");
+            Vector2 scale = transform.localScale;
+            Vector2 right = new Vector2(1, 1);
+            Vector2 left = new Vector2(-1, 1);
+            if (scale == right && dirH < 0 || scale == left && dirH > 0)
             {
-                transform.eulerAngles = new Vector2(0, 180);
+                mybody.velocity = new Vector2(dirH * speed, mybody.velocity.y);
             }
             else
             {
-                transform.eulerAngles = new Vector2(0, 0);
-                //transform.localScale = new Vector2(1, 1);
+                mybody.velocity = new Vector2(0, mybody.velocity.y);
             }
         }
         else
         {
-            myAnim.SetBool("isRunning", false);
+            float dirH = Input.GetAxis("Horizontal");
+            if (dirH != 0)
+            {
+                mybody.velocity = new Vector2(dirH * speed, mybody.velocity.y);
+                myAnim.SetBool("isRunning", true);
+                if (dirH < 0)
+                {
+                    transform.localScale = new Vector2(-1, 1);
+                    //transform.eulerAngles = new Vector2(0, 180);
+                }
+                else
+                {
+                    transform.localScale = new Vector2(1, 1);
+                }
+            }
+            else
+            {
+                myAnim.SetBool("isRunning", false);
+            }
         }
     }
 
@@ -130,6 +154,25 @@ public class Player : MonoBehaviour
         {
             myAnim.SetBool("isDead", true);
             StartCoroutine(MiCorutina2());        
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+       wall = false;
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if (!isGrounded && collision.gameObject.layer == 3)
+        {
+            wall = true;
+            Debug.Log(wall);
+        }
+
+        if (isGrounded)
+        {
+            wall = false;
         }
     }
 }

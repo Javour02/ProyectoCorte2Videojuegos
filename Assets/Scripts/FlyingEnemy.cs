@@ -8,12 +8,14 @@ public class FlyingEnemy : MonoBehaviour
 
     [SerializeField] GameObject player;
     [SerializeField] float life;
+    [SerializeField] AudioClip myAudio;
     Animator myAnim;
     AIPath myPath;
 
     // Start is called before the first frame update
     void Start()
     {
+        setEnemies.enemigos++;
         myPath = GetComponent<AIPath>();
         myAnim = GetComponent<Animator>();
     }
@@ -66,6 +68,8 @@ public class FlyingEnemy : MonoBehaviour
         }
         if(life == 0)
         {
+            setEnemies.enemigos--;
+            AudioSource.PlayClipAtPoint(myAudio, new Vector2(transform.position.x, transform.position.y));
             myAnim.SetBool("died", true);
             StartCoroutine(MiCorutina());
         }

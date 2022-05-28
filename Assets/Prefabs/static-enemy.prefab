@@ -149,6 +149,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bullet: {fileID: 3931441409280191715, guid: 630bec1e48f6e4a4bbb1ad39311fa338, type: 3}
   FireRate: 1
+  myAudio: {fileID: 8300000, guid: 741ab3b13ecfe3b42933ce54cf58c988, type: 3}
   life: 5
 --- !u!95 &-6641979333151585498
 Animator:

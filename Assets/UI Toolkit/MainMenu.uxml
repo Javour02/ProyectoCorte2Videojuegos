@@ -1,0 +1,13 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/my-styles.uss?fileID=7433441132597879392&amp;guid=276057766fc59f8429854f7958650e25&amp;type=3#my-styles" />
+    <ui:VisualElement style="width: 100%; height: 100%; justify-content: center; align-items: center; background-image: url(&apos;project://database/Assets/assets_platformer/megamanBackground.png?fileID=2800000&amp;guid=8a208cec30af85c4f9c4401c0b97ede1&amp;type=3#megamanBackground&apos;); background-color: rgba(37, 56, 123, 255);">
+        <ui:VisualElement style="background-color: rgba(255, 255, 255, 0.42); height: 70%; width: 50%; -unity-background-image-tint-color: rgba(255, 255, 255, 0.42); border-top-left-radius: 20px; border-bottom-left-radius: 20px; border-top-right-radius: 20px; border-bottom-right-radius: 20px; flex-direction: column; align-items: center; justify-content: flex-start;">
+            <ui:VisualElement style="margin-top: 5%; width: 90%; background-image: url(&apos;project://database/Assets/assets_platformer/megamanTitle.png?fileID=2800000&amp;guid=c3cde7c80da1a8d45b9735cc44d191e6&amp;type=3#megamanTitle&apos;); height: 40%;" />
+            <ui:Button text="Start Game" display-tooltip-when-elided="true" name="start-game" class="my-button" style="width: 80%; height: 120px; border-top-left-radius: 10px; border-bottom-left-radius: 10px; border-top-right-radius: 10px; border-bottom-right-radius: 10px; -unity-font: url(&apos;project://database/Assets/UI%20Toolkit/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=2230732570650464555&amp;guid=63e889e6f4f6c2c45bebc6cc8fde09d7&amp;type=3#NotInter-Regular&apos;); font-size: 50px; color: rgba(255, 255, 255, 255);" />
+            <ui:Label text="Integrantes:" display-tooltip-when-elided="true" enable-rich-text="false" class="estilo_nombres" style="margin-top: 3%; -unity-font-style: bold; font-size: 35px;" />
+            <ui:Label text="Vanessa Alexandra Gonzalez Casallas" display-tooltip-when-elided="true" class="estilo_nombres" />
+            <ui:Label text="Juan Felipe Rivera Neira" display-tooltip-when-elided="true" class="estilo_nombres" />
+            <ui:Label text="Javier Esteban Garavito Chaves" display-tooltip-when-elided="true" class="estilo_nombres" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

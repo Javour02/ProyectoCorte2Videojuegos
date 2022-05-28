@@ -125,6 +125,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   life: 2
+  myAudio: {fileID: 8300000, guid: 741ab3b13ecfe3b42933ce54cf58c988, type: 3}
 --- !u!114 &2344235342678095577
 MonoBehaviour:
   m_ObjectHideFlags: 0

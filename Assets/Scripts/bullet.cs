@@ -4,24 +4,30 @@ using UnityEngine;
 
 public class bullet : MonoBehaviour
 {
-    [SerializeField] float velocity;
-    Transform reference;
-    float myDirection;
     Rigidbody2D mybody;
+    float dir;
+    float speed;
+    bool isMoving;
     Animator myAnim;
     // Start is called before the first frame update
     void Start()
     {
         myAnim = GetComponent<Animator>();
         mybody = GetComponent<Rigidbody2D>();
-        myDirection = GetComponentInParent<Transform>().localEulerAngles.y;
     }
 
     // Update is called once per frame
     void Update()
     {
-
-    }
+        if (isMoving)
+        {
+            transform.Translate(new Vector2(speed * dir, 0) * Time.deltaTime);
+        }
+        else
+        {
+            transform.Translate(new Vector2(0,0));
+        }
+    } 
 
     IEnumerator MiCorutina()
     {
@@ -31,6 +37,7 @@ public class bullet : MonoBehaviour
 
     private void FixedUpdate()
     {
+        /*
         if (myDirection != 180)
         {
             mybody.velocity = new Vector2(velocity, mybody.velocity.y);
@@ -38,15 +45,21 @@ public class bullet : MonoBehaviour
         else
         {
             mybody.velocity = new Vector2(-velocity, mybody.velocity.y);
-        }
+        }*/
+    }
+
+    public void Shoot (float dir, float speed)
+    {
+        this.dir = dir;
+        this.speed = speed;
+        isMoving = true;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        mybody.velocity = new Vector2(0, 0);
-        transform.position = new Vector2(transform.position.x, transform.position.y);
-        mybody.bodyType = RigidbodyType2D.Static;
-        myAnim.SetBool("colisiono", true);
+        isMoving = false;
+        //mybody.bodyType = RigidbodyType2D.Static;
+        myAnim.SetTrigger("colisiono");
         StartCoroutine(MiCorutina());
     }
 }

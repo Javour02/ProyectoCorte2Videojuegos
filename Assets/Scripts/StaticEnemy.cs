@@ -6,12 +6,14 @@ public class StaticEnemy : MonoBehaviour
 {
     [SerializeField] GameObject bullet;
     [SerializeField] float FireRate;
+    [SerializeField] AudioClip myAudio;
     SpriteRenderer mySprite;
     BoxCollider2D myCollider;
     Animator myAnim;
     float starttime;
     [SerializeField] float life;
     bool isOnRange = true;
+    bool died = false;
     
     bool direction;
 
@@ -19,6 +21,7 @@ public class StaticEnemy : MonoBehaviour
     void Start()
     {
         myAnim = GetComponent<Animator>();
+        setEnemies.enemigos++;
         starttime = Time.time;
         mySprite = GetComponent<SpriteRenderer>();
         myCollider = GetComponent<BoxCollider2D>();
@@ -35,21 +38,24 @@ public class StaticEnemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        RaycastHit2D ray;
-        if (direction)
+        if (!died)
         {
-            ray = Physics2D.Raycast(transform.position, Vector2.right, 15f, LayerMask.GetMask("Player"));
-            Debug.DrawLine(transform.position, Vector2.right * 15f, Color.red);
+            RaycastHit2D ray;
+            if (direction)
+            {
+                ray = Physics2D.Raycast(transform.position, Vector2.right, 15f, LayerMask.GetMask("Player"));
+                Debug.DrawLine(transform.position, Vector2.right * 15f, Color.red);
+            }
+            else
+            {
+                ray = Physics2D.Raycast(transform.position, Vector2.left, 15f, LayerMask.GetMask("Player"));
+                Debug.DrawRay(transform.position, Vector2.left * 15f, Color.red);
+            }
+
+            //Debug.Log("Colisionando con "+ray.collider.gameObject.name);
+            isOnRange = (ray.collider != null);
+            Shoot();
         }
-        else
-        {
-            ray = Physics2D.Raycast(transform.position, Vector2.left, 15f, LayerMask.GetMask("Player"));
-            Debug.DrawRay(transform.position, Vector2.left * 15f, Color.red);
-        }
-        
-        //Debug.Log("Colisionando con "+ray.collider.gameObject.name);
-        isOnRange = (ray.collider != null);
-        Shoot();
     }
 
     void Shoot()
@@ -84,6 +90,9 @@ public class StaticEnemy : MonoBehaviour
         }
         if (life == 0)
         {
+            died = true; 
+            setEnemies.enemigos--;
+            AudioSource.PlayClipAtPoint(myAudio, new Vector2(transform.position.x, transform.position.y));
             myAnim.SetBool("isDead", true);
             StartCoroutine(MiCorutina());
         }
